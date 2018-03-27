@@ -16,21 +16,16 @@ import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 
 import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import static org.apache.poi.ss.usermodel.CellType.STRING;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -44,8 +39,8 @@ public class DPoster {
 
     private static final Logger LOG = Logger.getLogger(DPoster.class.getName());
 
-    private String sXlsxDocPathName;
-    private String sXlsxDocOutputPathName;
+    private final String sXlsxDocPathName;
+    private final String sXlsxDocOutputPathName;
     
     private FileInputStream inputStream;
     private FileOutputStream outFile;
@@ -68,7 +63,7 @@ public class DPoster {
     public void doTask() throws IOException {
     
         String sID;
-        XSSFCell cell, addressCell;
+        XSSFCell cell;
         NumberFormat nf = NumberFormat.getNumberInstance();
         
         String sStreetAdress;
@@ -85,9 +80,8 @@ public class DPoster {
         
         } catch (FileNotFoundException ex) {
             LOG.log(Level.SEVERE, null, ex);
-//        } catch (InvalidFormatException | EncryptedDocumentException | IOException ex) {
-        } catch ( EncryptedDocumentException | IOException ex) {
-            LOG.log(Level.SEVERE, null, ex);
+        } catch ( EncryptedDocumentException | IOException e) {
+            LOG.log(Level.SEVERE, null, e);
         }
         
         sheet = book.getSheetAt(0);
@@ -135,7 +129,8 @@ public class DPoster {
                     sTypeOfCell = "STRING";
                     break;
             }            
-}
+        }
+
 
     inputStream.close();    
     outFile = new FileOutputStream(sXlsxDocOutputPathName);
@@ -143,10 +138,6 @@ public class DPoster {
     
     }
 
-    private void putToXlsx (Row row, Cell adrCell, String sStreetAdr) {
-          ;  
-//        adrCell.setCellValue(sStreetAdr);
-    }
     
     
     private String getFromWeb(String sIDofPerson) throws IOException {
