@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 
 
 /**
- * Started on 13 March 11:35
- * @author Мен
+ * 
+ * @author Aman Mambetov "asanbay"@mail.ru
  */
 public class DataPosting {
 

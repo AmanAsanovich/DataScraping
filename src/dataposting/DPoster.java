@@ -33,7 +33,7 @@ import org.jsoup.nodes.Document;
 
 /**
  *
- * @author Мен
+ * @author Aman Mambetov "asanbay"@mail.ru
  */
 public class DPoster {
 
@@ -53,10 +53,9 @@ public class DPoster {
     private int iNumberOfReplacements;
     
     public DPoster() {
-        sXlsxDocPathName = "data\\1.xlsx";
-        sXlsxDocOutputPathName = "data\\output.xlsx";
-//        sSiteUrlPost = "http://superfundlookup.gov.au/SearchIndex.aspx";
-        sSiteUrl = "http://superfundlookup.gov.au/ABN/View?id=";
+        sXlsxDocPathName = "data\\NSW_Master.xlsx";                     // Source for IDs
+        sXlsxDocOutputPathName = "data\\output.xlsx";                   // Result here
+        sSiteUrl = "http://superfundlookup.gov.au/ABN/View?id=";        // Web link to source site
         sUserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36 OPR/41.0.2353.69";
     }
 
@@ -95,7 +94,6 @@ public class DPoster {
             sTypeOfCell ="";
             cell = (XSSFCell) row.getCell(0);
             if(row.getCell(1) == null) {
-//                System.out.print("Cell is null \n");
                 row.createCell(1, STRING);
             }
            
@@ -118,7 +116,9 @@ public class DPoster {
                     sID = nf.format(cell.getNumericCellValue());
                     sID = sID.replaceAll("\\D", "");  // remove spaces if any
                     System.out.print(sID);
-                    sStreetAdress = getFromWeb(sID);
+                    
+                    sStreetAdress = getFromWeb(sID);        // Get address from the web site using ID
+                    
                     System.out.print("\t");
                     System.out.print(sStreetAdress);
                     System.out.print("\n");
@@ -145,7 +145,7 @@ public class DPoster {
         String sResult;
         String sGetUrl = sSiteUrl.concat(sIDofPerson);
 
-        myDelay(2);
+        myDelay(2);                                 // This delay to be polite
         dDoc = Jsoup.connect(sGetUrl).get();
 /*                resp = Jsoup.connect(sSiteUrlPost)
             .postDataCharset("Windows-1251")
@@ -158,7 +158,7 @@ public class DPoster {
         dDoc = resp.parse();
 */
 
-//        FileWrite(dDoc.toString(), "out156.htm");
+//        FileWrite(dDoc.toString(), "Debug out159.htm");   // Debug
         sResult = dDoc.select("span[itemprop]").text();
         sResult = sResult.replaceAll("\\<br\\>", "");
     return sResult;
@@ -177,6 +177,7 @@ public class DPoster {
     }
     
     private void FileWrite(String sBuff, String sFileName) {
+        // This is for debug only
         final File f = new File(sFileName);
         try {
             FileUtils.writeStringToFile(f, sBuff, "UTF-8");
