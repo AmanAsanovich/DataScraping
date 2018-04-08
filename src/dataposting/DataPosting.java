@@ -6,6 +6,9 @@
 package dataposting;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 
 
@@ -20,6 +23,15 @@ static DPoster myPoster;
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
+        
+                
+        try {
+            LogManager.getLogManager().readConfiguration(
+            DataPosting.class.getResourceAsStream("logging.properties"));
+        } catch (IOException ex) {
+            Logger.getLogger(DataPosting.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         
         myPoster = new DPoster();
         myPoster.doTask();
