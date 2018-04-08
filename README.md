@@ -1,1 +1,1 @@
-Some data scraping code here as tutorial for me.
+Some data scraping code here made for some small work.
